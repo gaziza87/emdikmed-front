@@ -1,0 +1,51 @@
+<mat-table class="categories-list-table"
+           #table [dataSource]="pais"
+           matSort
+           fusePerfectScrollbar>
+    <ng-container matColumnDef="code">
+        <mat-header-cell *matHeaderCellDef>Code</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            <p class="text-truncate">{{row.code}}</p>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            <p class="text-truncate">{{row.name['ru']}}</p>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            <p class="text-truncate">{{row.description['ru']}}</p>
+        </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef>
+            <button mat-button color="accent" matTooltip="Добавить" (click)="openPAI(null)">
+                <mat-icon>add</mat-icon>
+            </button>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            <button mat-button color="accent" matTooltip="Изменить" (click)="openPAI(row.id)">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-button color="warn" matTooltip="Удалить" (click)="deactivate(row.id)">
+                <mat-icon>delete_forever</mat-icon>
+            </button>
+        </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+    <mat-row *matRowDef="let row; columns: displayedColumns;" class="product" matRipple></mat-row>
+
+</mat-table>
+<mat-paginator [length]="paginationTotalElements"
+               [pageSize]="paginationRows"
+               (page)="changeTableList($event)"
+               [pageSizeOptions]="pageItemCount">
+</mat-paginator>

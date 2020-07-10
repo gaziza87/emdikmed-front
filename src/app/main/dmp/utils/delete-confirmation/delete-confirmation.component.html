@@ -1,0 +1,17 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle}}</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+
+        <div class="event-form w-100-p p-2" fxLayout="column" fxFlex>
+            <h3>Вы уверены, что хотите удалить данный объект?</h3>
+        </div>
+    </div>
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-button mat-dialog-close (click)="matDialogRef.close()">Нет</button>
+        <button mat-raised-button color="primary" (click)="matDialogRef.close('DELETE')">Да</button>
+    </div>
+</div>

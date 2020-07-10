@@ -1,0 +1,240 @@
+<mat-horizontal-stepper #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel="Registration"></ng-template>
+
+            <div class="registration-v2">
+                <div class="event-form" *ngIf="!userAdded" style="width: 100%; padding-left: 1%; padding-right: 1%;"
+                     fxLayout="column" fxFlex>
+                    <h2>Поиск пациента</h2>
+                    <mat-chip-list>
+                        <mat-chip color="primary" (click)="showPhone()" style="cursor: pointer;">
+                            По телефону
+                        </mat-chip>
+                        <mat-chip color="primary" (click)="showIdn()" style="cursor: pointer;">
+                            По ИИН
+                        </mat-chip>
+                        <mat-chip color="primary" (click)="showSurname()" style="cursor: pointer;">
+                            По фамилии
+                        </mat-chip>
+                    </mat-chip-list>
+                    <mat-form-field *ngIf="this.searchType=='idn'" fxFlex>
+                        <mat-label>Поиск по ИИН</mat-label>
+                        <mat-icon matSuffix class="secondary-text">person_pin</mat-icon>
+                        <input name="search_by_idn" (keyup)="applyFilter($event.target.value)" matInput required>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="this.searchType=='phone'" fxFlex>
+                        <span matPrefix>+ &nbsp;</span>
+                        <input type="tel" matInput (keyup)="applyFilter($event.target.value)">
+                        <mat-icon matSuffix>contact_phone</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="this.searchType=='surname'" fxFlex>
+                        <mat-label> По фамилии</mat-label>
+                        <input type="tel" matInput placeholder="Фамилия Имя" (keyup)="applyFilter($event.target.value)">
+                        <mat-icon matSuffix>user</mat-icon>
+                    </mat-form-field>
+                    <div *ngIf="searchType!='surname'">
+                        <mat-card *ngIf="userFound === true" style="width: 100%">
+                            <div fxLayout="row" style="max-width: 100%;">
+                                <div fxFlex="50">
+                                <span>
+                                    <mat-icon>account_box</mat-icon>
+                                        <span
+                                                style="font-size: 22px;">{{userDTO?.user?.surname}} {{userDTO?.user?.name}} {{userDTO?.user?.middlename}}</span>
+                                    </span>
+                                </div>
+                                <div fxFlex="50" *ngIf="userAdded == false">
+                                    <button mat-raised-button color="primary" (click)="approve()">Это тот пользователь?
+                                    </button>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                    <div *ngIf="searchType=='surname'">
+                        <div *ngFor="let user of users; let i = index">
+                            <mat-card *ngIf="userFound === true" style="width: 100%">
+                                <div fxLayout="row">
+                                    <div fxFlex="50">
+                                        <span>
+                                            <mat-icon>account_box</mat-icon>
+                                            <span style="font-size: 22px;">{{userDTO?.user?.surname}} {{userDTO?.user?.name}} {{userDTO?.user?.middlename}}</span>
+                                        </span>
+                                    </div>
+                                    <div fxFlex="50" *ngIf="userAdded == false">
+                                        <button mat-raised-button color="primary" (click)="approve(i)">Это тот
+                                            пользователь?
+                                        </button>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <br>
+
+            <button *ngIf="!userAdded" (click)="createNewUser()" mat-raised-button color="primary">
+                <mat-icon>save</mat-icon>
+                Новый пациент
+            </button>
+
+
+            <button *ngIf="userFound && userAdded" (click)="changeUser()" mat-raised-button color="primary">
+                <mat-icon>save</mat-icon>
+                Поиск существующего пациента
+            </button>
+            <br>
+
+            <div *ngIf="userFound && userAdded">
+
+                <br>
+                <h2 style="color: green">{{userDTO?.user?.surname}} {{userDTO?.user?.name}} {{userDTO?.user?.middlename}}</h2>
+                <br>
+
+                <mat-form-field color="accent" appearance="outline" class="w-100">
+                    <mat-label>Имя</mat-label>
+                    <input matInput formControlName="name" placeholder="Имя" [(ngModel)]="registrationUser.name">
+                </mat-form-field>
+
+                <mat-form-field color="accent" appearance="outline" class="w-100">
+                    <mat-label>Фамилия</mat-label>
+                    <input matInput formControlName="surname" placeholder="Фамилия"
+                           [(ngModel)]="registrationUser.surname">
+                </mat-form-field>
+
+                <mat-form-field color="accent" appearance="outline" class="w-100">
+                    <mat-label>Отчество</mat-label>
+                    <input matInput formControlName="middlename" placeholder="Отчество"
+                           [(ngModel)]="registrationUser.middlename">
+                </mat-form-field>
+
+                <mat-form-field color="accent" appearance="outline" class="w-100">
+                    <mat-label>ИИН</mat-label>
+                    <input matInput formControlName="idn" placeholder="ИИН" [(ngModel)]="registrationUser.idn">
+                </mat-form-field>
+
+                <mat-form-field color="accent" appearance="outline" class="w-100">
+                    <mat-label>Номер телефона</mat-label>
+                    <input matInput formControlName="mobilePhone" placeholder="Номер телефона"
+                           [(ngModel)]="registrationUser.mobilePhone">
+                </mat-form-field>
+
+                <mat-form-field color="accent" appearance="outline" class="w-100">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" placeholder="Email" [(ngModel)]="registrationUser.email">
+                </mat-form-field>
+
+                <mat-form-field color="accent" appearance="outline" class="w-100">
+                    <mat-label>Пол</mat-label>
+                    <mat-select [formControlName]="'sex'" [(ngModel)]="registrationUser.sex">
+                        <mat-option value="Мужской">Мужской</mat-option>
+                        <mat-option value="Женский">Женский</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field color="accent" appearance="outline" class="example-full-width w-100">
+                    <mat-label>Дата рождения</mat-label>
+                    <input matInput formControlName="birthday" [(ngModel)]="registrationUser.birthday"
+                           [matDatepicker]="picker">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker touchUi #picker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field color="accent" appearance="outline" class="w-100">
+                    <mat-label>Национальность</mat-label>
+                    <mat-select [formControlName]="'nationality'" [(ngModel)]="registrationUser.nationality">
+                        <mat-option value="Казах/Казашка">Казах/Казашка</mat-option>
+                        <mat-option value="Русский/Русская">Русский/Русская</mat-option>
+                        <mat-option value="Татарин/Татарка">Татарин/Татарка</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field color="accent" appearance="outline" class="w-100">
+                    <mat-label>Адрес</mat-label>
+                    <input matInput formControlName="address" placeholder="Адрес"
+                           [(ngModel)]="registrationUser.address">
+                </mat-form-field>
+
+                <div>
+                    <button mat-raised-button matStepperNext style="background-color: #3F51B5; color: white;"
+                            (click)="register()">
+                        <span *ngIf="registrationUser && !registrationUser.id">Зарегистрировать</span>
+                        <span *ngIf="registrationUser && registrationUser.id">Сохранить</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel="Calendar"></ng-template>
+
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex>
+                    <mat-label>Врачи</mat-label>
+                    <mat-select [formControlName]="'doctor'" [formControl]="selectDoctorCtrl" placeholder="Выберите согласователя"
+                                [(ngModel)]="doctor" (selectionChange)="initAppointment()" #singleDoctorSelect>
+                        <app-mat-select-search [formControl]="filterDoctorCtrl"></app-mat-select-search>
+                        <mat-option *ngFor="let d of doctors; trackBy: trackById" [value]="d">
+                            {{d.user.surname}} {{d.user.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+
+            <mat-card *ngIf="appointment">
+                <mat-card-header fxLayoutAlign="center center">
+                    <mat-card-subtitle>
+                        <div class="header-bottom" fxLayout="row" fxLayoutAlign="center center">
+
+                            <button mat-icon-button class="arrow" (click)="showPreviousWeek()">
+                                <mat-icon>chevron_left</mat-icon>
+                            </button>
+
+                            <div class="title">
+                                {{period}}
+                            </div>
+
+                            <button mat-icon-button class="arrow"
+                                    (click)="showNextWeek()">
+                                <mat-icon>chevron_right</mat-icon>
+                            </button>
+                        </div>
+                    </mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <mat-grid-list cols="8" rowHeight="100px">
+                        <mat-grid-tile *ngFor="let header of headers" [style.background]="'lightgray'">
+                            <span style="text-align: center;">{{header.name}}<br>{{header.dateString}}</span>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                    <mat-grid-list *ngFor="let t of time" cols="8" rowHeight="50px">
+                        <mat-grid-tile class="cell-info" [style.background]="'lightgray'">{{t}}</mat-grid-tile>
+                        <mat-grid-tile *ngFor="let cell of appointment.cellInfoMap[t]; let i = index;"
+                                       [style.background]="cell.color" class="cell-info clickable"
+                                       [matMenuTriggerFor]="appMenu">
+                            {{cell.cellText}}
+                            <mat-menu #appMenu="matMenu">
+                                <button mat-menu-item style="background: green;">
+                                    <span style="font-size: 12px;" (click)="saveAppointment(t, i, 'green')">Подтвержденный</span>
+                                </button>
+                                <button mat-menu-item style="background: yellow; font-size: 8px;">
+                                    <span style="font-size: 12px;"
+                                          (click)="saveAppointment(t, i, 'yellow')">Не подтвержденный</span>
+                                </button>
+                                <button mat-menu-item style="background: lightgray; font-size: 8px;">
+                                    <span style="font-size: 12px;" (click)="saveAppointment(t, i, 'lightgray')">Пустой</span>
+                                </button>
+                            </mat-menu>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                </mat-card-content>
+            </mat-card>
+        </form>
+    </mat-step>
+</mat-horizontal-stepper>

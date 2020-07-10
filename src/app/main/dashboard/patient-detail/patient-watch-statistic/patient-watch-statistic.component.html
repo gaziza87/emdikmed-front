@@ -1,0 +1,27 @@
+<div fxLayout="column">
+        <div class="flex-p">
+            <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
+                <ng-container matColumnDef="position">
+                    <mat-header-cell *matHeaderCellDef> Параметр</mat-header-cell>
+                    <mat-cell *matCellDef="let elements"> {{elements.position}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef> Значение</mat-header-cell>
+                    <mat-cell *matCellDef="let elements"> {{elements.name}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="weight">
+                    <mat-header-cell *matHeaderCellDef> Референсные значения</mat-header-cell>
+                    <mat-cell *matCellDef="let elements"> {{elements.weight}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="symbol">
+                    <mat-header-cell *matHeaderCellDef> Статус</mat-header-cell>
+                    <mat-cell *matCellDef="let elements">
+                        <mat-icon>warning</mat-icon>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+        </div>
+    </div>

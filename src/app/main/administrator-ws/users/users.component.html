@@ -1,0 +1,75 @@
+<div fxLayout="column">
+    <div class="flex-p">
+        <div fxLayout="column" class="mat-elevation-z8">
+            <mat-form-field class="p-1"><input matInput placeholder="Type to filter the name column..." (keyup)="updateFilter($event)">
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="userControl(null)">Добавить</button>
+            <br>
+        </div>
+        <ngx-datatable
+            #table
+            class="material"
+            [headerHeight]="50"
+            [limit]="10"
+            [columnMode]="'force'"
+            [footerHeight]="50"
+            [rowHeight]="'auto'"
+            [rows]="userDTOList"
+            [selected]="selected"
+            [selectionType]="'checkbox'">
+<!--            [loadingIndicator]="loadingIndicator"-->
+            <!--            (activate)="onActivate($event)"-->
+            <!--            (select)='onSelect($event)'>-->
+            <ngx-datatable-column
+                    [width]="30"
+                    [sortable]="false"
+                    [canAutoResize]="false"
+                    [draggable]="true"
+                    [resizeable]="false"
+                    [headerCheckboxable]="true"
+                    [checkboxable]="true">
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Fullname">
+                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                    {{row.user?.surname}} {{row.user?.name}} {{row.user?.middlename}}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Phone">
+                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                    {{row.user?.mobilePhone}}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="E-mail">
+                <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                    {{row.user?.email}}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="IDN">
+                <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                    {{row.user?.idn}}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Actions">
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <button mat-icon-button color="primary"  (click)="userControl(row)">
+                        <mat-icon style="margin-bottom: 10%">edit</mat-icon></button>
+                    <button mat-icon-button color="primary"  (click)="Delete(row.userId)">
+                        <mat-icon color="warn">delete</mat-icon>
+                    </button>
+                    <mat-slide-toggle
+                            [color]="color"
+                            [checked]="checked"
+                            [disabled]="disabled">
+                    </mat-slide-toggle>
+                </ng-template>
+            </ngx-datatable-column>
+        </ngx-datatable>
+        <mat-paginator (change)="changeTableList($event)"
+                       [length]="paginationTotalElements"
+                       [pageIndex]="page"
+                       [pageSize]="size"
+                       (page)="changeTableList($event)"
+                       [pageSizeOptions]="[5, 10, 25, 100]">
+        </mat-paginator>
+    </div>
+</div>

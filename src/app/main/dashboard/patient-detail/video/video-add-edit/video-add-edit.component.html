@@ -1,0 +1,39 @@
+<mat-dialog-content>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-subtitle><h2>Добавить видео в профайл пациента</h2></mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+
+            <mat-grid-list cols="3" rowHeight="2:1">
+                <mat-grid-tile *ngFor="let video of videoContentList">
+                    <div>
+                        <mat-video [title]="video.name" [autoplay]="false" [preload]="true" [fullscreen]="true"
+                                   [download]="true"
+                                   color="accent" spinner="spin" poster="image.jpg">
+                            <source matVideoSource [src]="((adminUrl + '/video/test/' + video?.videoId))" type="video/mp4">
+                        </mat-video>
+
+                    </div>
+                    <div>
+                        <button mat-icon-button color="primary" (click)="createPatientVideoMap(video)">
+                            <mat-icon >add</mat-icon>
+                        </button>
+
+                    </div>
+                    <!--                            <vg-player class="video-pl mrgn-all-md mrgn-b-lg">-->
+                    <!--                                <video [vgMedia]="media" #media id="singleVideo" preload="auto" controls  >-->
+                    <!--                                    <source [src]="((adminUrl + '/video/test/' + video?.videoId))"-->
+                    <!--                                            type="video/mp4">-->
+                    <!--                                </video>-->
+                    <!--                            </vg-player>-->
+
+                </mat-grid-tile>
+            </mat-grid-list>
+        </mat-card-content>
+    </mat-card>
+</mat-dialog-content>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+<!--    <button mat-raised-button color="primary" (click)="createPatientVideoMap()" ><span>Добавить</span></button>-->
+    <button mat-raised-button color="warn" (click)="close()">Закрыть панель</button>
+</div>

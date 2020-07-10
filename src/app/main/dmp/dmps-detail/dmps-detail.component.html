@@ -1,0 +1,37 @@
+<mat-card>
+    <mat-card-header fxLayoutAlign="center">
+        <mat-card-subtitle><h2>Reports</h2></mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <form fxLayout="column" fxLayoutAlign="center">
+
+            <mat-form-field>
+                <input matInput placeholder="Company (disabled)" disabled value="Алихан Махмед">
+            </mat-form-field>
+
+            <table cellspacing="0" class="w-100">
+                <tr>
+                    <td>
+                        <mat-form-field class="w-80">
+                            <input matInput placeholder="Extension" disabled value=".docx .pdf">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field class="w-80">
+                            <input matInput placeholder="Description" disabled value="отчет по ПУЗ">
+                        </mat-form-field>
+                    </td>
+                </tr>
+
+            </table>
+
+            <input type="file"/>
+
+            <div class="p-2" mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+                <button mat-raised-button color="primary">Save</button>
+                <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+            </div>
+
+        </form>
+    </mat-card-content>
+</mat-card>

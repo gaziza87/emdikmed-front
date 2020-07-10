@@ -1,0 +1,10 @@
+.cell-info {
+  border: 1px solid white;
+}
+.clickable {
+  cursor: pointer;
+}
+.mat-menu-content:not(:empty) {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}

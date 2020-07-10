@@ -1,0 +1,105 @@
+<div class="flex-p">
+    <mat-card>
+        <mat-card-header fxLayoutAlign="center">
+            <mat-card-subtitle><h2 style="color: #242424">Регистрация пациента</h2></mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+
+                <table>
+                    <tr>
+                        <td>
+                            <mat-form-field color="accent" appearance="outline" class="w-100">
+                                <mat-label>Имя</mat-label>
+                                <input matInput name="name" placeholder="Имя" [(ngModel)]="user.name">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field color="accent" appearance="outline" class="w-100">
+                                <mat-label>Фамилия</mat-label>
+                                <input matInput name="surname" placeholder="Фамилия" [(ngModel)]="user.surname">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field color="accent" appearance="outline" class="w-100">
+                                <mat-label>Отчество</mat-label>
+                                <input matInput name="middlename" placeholder="Отчество" [(ngModel)]="user.middlename">
+                            </mat-form-field>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <mat-form-field color="accent" appearance="outline" class="w-100">
+                                <mat-label>Номер телефона</mat-label>
+                                <input matInput name="mobilePhone" placeholder="Номер телефона"
+                                       [(ngModel)]="user.mobilePhone">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field color="accent" appearance="outline" class="w-100">
+                                <mat-label>Email</mat-label>
+                                <input matInput name="email" placeholder="Email" [(ngModel)]="user.email">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field color="accent" appearance="outline" class="w-100">
+                                <mat-label>Адрес</mat-label>
+                                <input matInput name="address" placeholder="Адрес" [(ngModel)]="user.address">
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </table>
+
+
+                <mat-form-field color="accent" appearance="outline" class="w-100">
+                    <mat-label>ИИН</mat-label>
+                    <input matInput name="idn" placeholder="ИИН" [(ngModel)]="user.idn">
+                </mat-form-field>
+<!--                <mat-form-field color="accent" class="w-100" appearance="outline">-->
+<!--                    <mat-label>{{'Организации'}}</mat-label>-->
+<!--                    <mat-select class="w-100" [(ngModel)]="userRoleOrgMap.orgId"-->
+<!--                                (selectionChange)="chooseOrganization()">-->
+<!--&lt;!&ndash;                        <mat-option>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <ngx-mat-select-search [(ngModel)]="search"&ndash;&gt;-->
+<!--&lt;!&ndash;                                                   [placeholderLabel]="'Поиск ...'"&ndash;&gt;-->
+<!--&lt;!&ndash;                                                   [noEntriesFoundLabel]="'не найдено'"&ndash;&gt;-->
+<!--&lt;!&ndash;                                                   (keyup)="searchOrganization()"></ngx-mat-select-search>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </mat-option>&ndash;&gt;-->
+<!--                        <mat-option *ngFor="let org of organizations" [value]="org.id">-->
+<!--                            {{org.name ['lan.cur' | translate]}}-->
+<!--                        </mat-option>-->
+<!--                    </mat-select>-->
+<!--                </mat-form-field>-->
+
+
+                <mat-form-field color="accent" appearance="outline" class="w-100">
+                    <mat-label>Пол</mat-label>
+                    <mat-select name="sex" [(ngModel)]="user.sex">
+                        <mat-option value="Мужской">Мужской</mat-option>
+                        <mat-option value="Женский">Женский</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field color="accent" appearance="outline" class="example-full-width w-100">
+                    <mat-label>Дата рождения</mat-label>
+                    <input matInput name="birthday" [matDatepicker]="picker" [(ngModel)]="user.birthday">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker touchUi #picker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field color="accent" appearance="outline" class="w-100">
+                    <mat-label>Национальность</mat-label>
+                    <mat-select name="nationality" [(ngModel)]="user.nationality">
+                        <mat-option value="Казак/Казашка">Казак/Казашка</mat-option>
+                        <mat-option value="Русский/Русская">Русский/Русская</mat-option>
+                        <mat-option value="Татарин/Татарка">Татарин/Татарка</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+
+            <button mat-raised-button style="background-color: #3F51B5; color: white;" (click)="register()">
+                Зарегистрировать
+            </button>
+        </mat-card-content>
+    </mat-card>
+</div>

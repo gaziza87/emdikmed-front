@@ -1,0 +1,122 @@
+<mat-tab-group>
+    <mat-tab label="18.03.2020">
+        <div fxLayout="column">
+            <div class="flex-p">
+                <mat-card>
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-subtitle><h2>График работы сотрудников на 18.03.2020</h2></mat-card-subtitle>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="space-around center" >
+                        <button mat-raised-button routerLink="doctors"> Показать общий список</button>
+                    </div>
+                    <mat-card-content>
+                        <mat-grid-list cols="3" rowHeight="4:1">
+                            <div *ngFor="let item of departmentList">
+                                <mat-grid-tile>
+                                    <mat-card fxFlex="80"><a routerLink="department-detail"><h2>{{item.name}}</h2></a></mat-card>
+                                </mat-grid-tile>
+                            </div>
+                        </mat-grid-list>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab label="17.03.2020">
+        <p class="py-1">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue.
+            Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus.
+            In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec,
+            feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor,
+            orci enim rutrum enim, vel tempor sapien arcu a tellus.
+        </p>
+    </mat-tab>
+    <mat-tab label="16.03.2020">
+        <p class="py-1">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue.
+            Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus.
+            In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec,
+            feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor,
+            orci enim rutrum enim, vel tempor sapien arcu a tellus.
+        </p>
+        <p class="py-1">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue.
+            Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus.
+            In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec,
+            feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor,
+            orci enim rutrum enim, vel tempor sapien arcu a tellus.
+        </p>
+    </mat-tab>
+    <mat-tab label="15.03.2020">
+        <p class="py-1">No content in Tab 4</p>
+    </mat-tab>
+    <mat-tab label="14.03.2020">
+        <p class="py-1">No content in Tab 5</p>
+    </mat-tab>
+    <mat-tab label="13.03.2020">
+        <p class="py-1">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue.
+            Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus.
+            In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec,
+            feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor,
+            orci enim rutrum enim, vel tempor sapien arcu a tellus.
+        </p>
+    </mat-tab>
+    <mat-tab label="12.03.2020">
+        <p class="py-1">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue.
+            Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus.
+            In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec,
+            feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor,
+            orci enim rutrum enim, vel tempor sapien arcu a tellus.
+        </p>
+    </mat-tab>
+    <mat-tab label="11.03.2020">
+        <p class="py-1">No content in Tab 4</p>
+    </mat-tab>
+    <mat-tab label="10.03.2020">
+        <p class="py-1">No content in Tab 5</p>
+    </mat-tab>
+    <mat-tab label="9.03.2020">
+        <p class="py-1">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue.
+            Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus.
+            In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec,
+            feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor,
+            orci enim rutrum enim, vel tempor sapien arcu a tellus.
+        </p>
+    </mat-tab>
+    <mat-tab label="8.03.2020">
+        <p class="py-1">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue.
+            Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus.
+            In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec,
+            feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor,
+            orci enim rutrum enim, vel tempor sapien arcu a tellus.
+        </p>
+    </mat-tab>
+    <mat-tab label="7.03.2020">
+        <p class="py-1">No content in Tab 4</p>
+    </mat-tab>
+    <mat-tab label="6.03.2020">
+        <p class="py-1">No content in Tab 5</p>
+    </mat-tab>
+    <mat-tab label="5.03.2020">
+        <p class="py-1">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue.
+            Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus.
+            In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec,
+            feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor,
+            orci enim rutrum enim, vel tempor sapien arcu a tellus.
+        </p>
+    </mat-tab>
+    <mat-tab label="4.03.2020">
+        <p class="py-1">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue.
+            Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus.
+            In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec,
+            feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor,
+            orci enim rutrum enim, vel tempor sapien arcu a tellus.
+        </p>
+    </mat-tab>
+</mat-tab-group>

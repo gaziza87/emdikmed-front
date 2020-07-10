@@ -1,0 +1,82 @@
+<div fxLayout="row" fxLayoutAlign="space-between center" class="flex-p">
+    <div fxLayout="row">
+        <mat-button-toggle-group #controls="matButtonToggleGroup" appearance="legacy">
+            <mat-button-toggle value="add">
+                <mat-icon (click)="templateControl(null)"> insert_drive_file</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="search">
+                <mat-icon>search</mat-icon>
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+    </div>
+
+    <form class="user-search" [class.show]="controls.value == 'search'">
+        <mat-form-field class="user-search-input">
+            <input matInput placeholder="Search" [(ngModel)]="searchText" name="search"
+                   (keyup)="searchReport()">
+        </mat-form-field>
+    </form>
+</div>
+<div fxLayout="column">
+    <div class="flex-p">
+        <!--<div fxLayout="column" class="mat-elevation-z8">
+            <mat-form-field class="p-1"><input matInput placeholder="Type to filter the name column..."
+                                               (keyup)="updateFilter($event)">
+                <mat-icon>search</mat-icon>
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="Edit()">Добавить</button>
+            <br>
+        </div>-->
+        <ngx-datatable
+                #table
+                class="material"
+                [headerHeight]="50"
+                [limit]="10"
+                [columnMode]="'force'"
+                [footerHeight]="50"
+                [rowHeight]="'auto'"
+                [rows]="templateList"
+                [loadingIndicator]="loadingIndicator">
+            <!--            (activate)="onActivate($event)"-->
+            <!--            (select)='onSelect($event)'>-->
+            <ngx-datatable-column
+                    [width]="30"
+                    [sortable]="true"
+                    [canAutoResize]="false"
+                    [draggable]="true"
+                    [resizeable]="false">
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Name">
+                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                  {{value}}
+                </ng-template>
+            </ngx-datatable-column>
+<!--            <ngx-datatable-column name="Extension">-->
+<!--                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">-->
+<!--                    {{value}}-->
+<!--                </ng-template>-->
+<!--            </ngx-datatable-column>-->
+            <ngx-datatable-column name="Description">
+                <ng-template ngx-datatable-cell-template let-value="value">
+                    {{value}}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="File Name">
+                <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                    {{row.fileName}}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Actions">
+                <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                    <button mat-icon-button color="primary" (click)="templateControl(row)">
+                        <mat-icon style="margin-bottom: 10%">edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary" (click)="Delete()">
+                        <mat-icon color="warn">delete</mat-icon>
+                    </button>
+                </ng-template>
+            </ngx-datatable-column>
+        </ngx-datatable>
+    </div>
+</div>

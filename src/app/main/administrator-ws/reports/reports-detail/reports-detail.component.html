@@ -1,0 +1,64 @@
+<mat-dialog-content><h2>{{dialogTitle}}</h2>
+    <div fxLayout="column" fxLayoutAlign="space-around stretch">
+        <mat-form-field>
+            <input matInput [(ngModel)]="template.name" required placeholder="Name">
+        </mat-form-field>
+        <mat-form-field>
+
+                <textarea matInput [(ngModel)]="template.description" required
+                          placeholder="Description (disabled)" max-rows="5" cols="40">
+                </textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Тип шаблона</mat-label>
+            <mat-select placeholder="Тип шаблона" [(ngModel)]="template.fileType" [required]="true">
+                <mat-option *ngFor="let temp of templateTypes" [value]="temp">
+                    {{temp}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <br>
+
+
+    <div class="textarea-wrapper" style="display: block!important;">
+        <div style="text-align:center">
+            <!--<app-template-file-upload-->
+            <div layout="row" layout-wrap>
+                <div fxFlex="20">
+
+                    <input type="file" id="fileUpload" name="fileUpload" style="display:none;"/>
+                    <!--(complete)="onFileComplete($event)"></app-template-file-upload>-->
+                    <button mat-raised-button (click)="addFile('')" type="button">
+                        <mat-icon>arrow_upward</mat-icon>
+                        <span *ngIf="!this.template.fileId">Upload a file</span>
+                        <span *ngIf="this.template.fileId">Change template</span>
+                    </button>
+                </div>
+                <div fxFlex="80">
+                            <span class="mat-title" *ngIf="template.fileId">
+                                Download:
+                                <!--<a target="_blank"-->
+                                <!--[href]="('med/med-rmm/template/file/' + this.template.id | secure) | async">-->
+                                <!--jrxml template-->
+                                <!--</a>-->
+                                <button mat-button>
+                                    <a [href]="adminUrl + '/video/test/' + template.fileId" *ngIf="action==='edit'">{{template.fileName}}</a>
+                                    <a [href]="adminUrl + '/video/test/' + template.fileId" *ngIf="action!=='edit'">{{fileToUpload?.name}}</a>
+<!--                                {{this.template.}}-->
+                                </button>
+                            </span>
+                </div>
+
+            </div>
+            <br/>
+        </div>
+    </div>
+
+</mat-dialog-content>
+
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+    <button mat-raised-button color="primary" (click)="saveTemplate()">Сохранить</button>
+    <button mat-raised-button color="warn" (click)="close()">Закрыть</button>
+</div>

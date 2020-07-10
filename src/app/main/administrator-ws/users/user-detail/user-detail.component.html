@@ -1,0 +1,138 @@
+<mat-dialog-content >
+    <mat-card>
+        <mat-card-header>
+            <mat-card-subtitle><h2>{{dialogTitle}}</h2></mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            <div fxFlex="40" class="flex-p">
+
+                <mat-tab-group class="vertical-tabs">
+                    <mat-tab label="Персональные данные">
+                        <div fxLayout="column">
+                            <mat-form-field class="w-100">
+                                <input matInput required placeholder="ИИН" maxlength="12" minlength="12" [(ngModel)]="user.idn">
+                                <mat-hint align="end">{{user.idn?.length}} / 12</mat-hint>
+                            </mat-form-field>
+                            <mat-form-field class="w-100" >
+                                <input matInput required placeholder="Пароль" minlength="6"  type="password" [(ngModel)]="password">
+                                <mat-error *ngIf="password.length < 6">Пароль должен содержать как минимум 6 символов</mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="w-100">
+                                <input matInput required placeholder="Имя" [(ngModel)]="user.name">
+                            </mat-form-field>
+                            <mat-form-field class="w-100">
+                                <input matInput required placeholder="Фамилия" [(ngModel)]="user.surname">
+                            </mat-form-field>
+                            <mat-form-field class="w-100">
+                                <input matInput required placeholder="Отчество" [(ngModel)]="user.middlename">
+                            </mat-form-field>
+                            <mat-form-field class="w-100">
+                                <input matInput [matDatepicker]="birthday" placeholder="Дата рождения"
+                                       [(ngModel)]="user.birthday">
+                                <mat-datepicker-toggle matSuffix [for]="birthday"></mat-datepicker-toggle>
+                                <mat-datepicker #birthday></mat-datepicker>
+                            </mat-form-field>
+                            <mat-radio-group [(ngModel)]="user.sex">
+                                <mat-radio-button value="male" labelPosition="after">Male</mat-radio-button>
+                                <mat-radio-button value="female" labelPosition="after">Female</mat-radio-button>
+                            </mat-radio-group>
+
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Работа" *ngIf="action === 'edit'">
+                        <div fxLayout="column" class="form-field-outer">
+                            <!--                            <mat-form-field class="w-100">-->
+                            <!--                                <input matInput placeholder="Company" [(ngModel)]="userAccount.userRoleOrgMapList">-->
+                            <!--                            </mat-form-field>-->
+                            <!--                            <mat-form-field class="w-100">-->
+                            <!--                                <input matInput placeholder="Image url" [(ngModel)]="userAccount.imageUrl">-->
+                            <!--                            </mat-form-field>-->
+                            <mat-form-field class="w-100">
+                                <input matInput placeholder="Должность" [(ngModel)]="userAccount.position">
+                            </mat-form-field>
+                            <mat-form-field class="w-100">
+                                <input matInput placeholder="Код врача" [(ngModel)]="userAccount.doctorCode">
+                            </mat-form-field>
+                            <mat-form-field class="w-100">
+                                <input matInput placeholder="Специальность" [(ngModel)]="userAccount.specialty">
+                            </mat-form-field>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Contacts">
+                        <div fxLayout="column" class="form-field-outer">
+                            <mat-form-field class="w-100">
+                                <input matInput type="email" placeholder="Почта" [(ngModel)]="user.email">
+                            </mat-form-field>
+                            <mat-form-field class="w-100">
+                                <input matInput placeholder="Телефон" [(ngModel)]="user.mobilePhone">
+                            </mat-form-field>
+                            <mat-form-field class="w-100">
+                                <input matInput placeholder="Адрес" [(ngModel)]="user.address">
+                            </mat-form-field>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+
+            </div>
+            <div fxFlex="60" class="flex-p">
+                <mat-label>{{'Роли'}}</mat-label>
+                <div *ngIf="isGAdmin">
+                    <div fxLayout="row" fxLayoutAlign="space-around center" >
+                        <mat-form-field color="accent" class="w-100" appearance="outline">
+                            <mat-label>{{'Организации'}}</mat-label>
+                            <mat-select class="w-100" [(ngModel)]="selectedOrganizationIds" multiple>
+                                <mat-option>
+                                    <ngx-mat-select-search [(ngModel)]="search"
+                                                           [placeholderLabel]="'Поиск ...'"
+                                                           [noEntriesFoundLabel]="'не найдено'"
+                                                           (keyup)="searchOrganization()"></ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option *ngFor="let org of organizations" [value]="org.id">
+                                    {{org.name ['lan.cur' | translate]}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <button mat-raised-button color="primary" (click)="(addOrg())">Добавить</button>
+                    </div>
+                    <div *ngFor="let userRoleOrgMap of userAccount.userRoleOrgMapList">
+                        <mat-expansion-panel class="m-0" *ngIf="orgMap">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title class="m-0"><h3> {{orgSubject.getValue()[userRoleOrgMap.orgId]}}</h3></mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <mat-selection-list *ngIf="isGAdmin" [(ngModel)]="userRoleOrgMap.roles">
+                                <mat-list-option *ngFor="let value of [0,1,2,3,4,5]" [value]="roles[value]">
+                                    {{roles[value]}}
+                                </mat-list-option>
+                            </mat-selection-list>
+                        </mat-expansion-panel>
+                    </div>
+                </div>
+            </div>
+
+
+            <div *ngIf="isLAdmin">
+                <mat-expansion-panel class="m-0" *ngFor="let userRoleOrgMap of userAccount.userRoleOrgMapList">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="m-0"><h3> {{userRoleOrgMap?.orgId}}</h3></mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <mat-selection-list *ngIf="isLAdmin" #role [(ngModel)]="userRoleOrgMap.roles">
+                        <mat-list-option *ngFor="let value of [0,1,2,3,4,5]" [value]="roles[value]">
+                            {{roles[value]}}
+                        </mat-list-option>
+                    </mat-selection-list>
+                </mat-expansion-panel>
+
+            </div>
+
+
+        </mat-card-content>
+    </mat-card>
+</mat-dialog-content>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+    <button mat-raised-button color="primary" *ngIf="action !=='edit'" (click)="createStaff()"><span>Создать</span></button>
+    <button mat-raised-button color="primary" *ngIf="action ==='edit'" (click)="editStaff()"><span>Изменить</span></button>
+    <button mat-raised-button color="warn" (click)="close()">Закрыть</button>
+</div>

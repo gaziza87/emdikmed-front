@@ -1,0 +1,47 @@
+<div>
+    <h1 mat-dialog-title>
+        <span class="title dialog-title">{{dialogTitle}}</span>
+    </h1>
+
+    <div mat-dialog-content class="p-24 m-0" >
+
+        <div class="event-form w-100-p" fxLayout="column" fxFlex>
+            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                <mat-label>Код</mat-label>
+                <input matInput name="code" [(ngModel)]="medication.code" required>
+            </mat-form-field>
+            <mat-radio-group fxLayout="row" [(ngModel)]="selectedLanguage" fxLayoutAlign="space-between center">
+                <mat-radio-button [value]="'kz'">
+                    Казахский
+                </mat-radio-button>
+                <mat-radio-button [value]="'ru'">
+                    Русский
+                </mat-radio-button>
+                <mat-radio-button [value]="'en'">
+                    Английский
+                </mat-radio-button>
+            </mat-radio-group>
+            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                <mat-label>Наименование</mat-label>
+                <input matInput name="name" [(ngModel)]="medication.name[selectedLanguage]" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                <mat-label>Описание</mat-label>
+                <textarea matInput [(ngModel)]="medication.description[selectedLanguage]" name="description" rows="5"
+                          required></textarea>
+            </mat-form-field>
+            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                <mat-label>Категории</mat-label>
+                <mat-select [(ngModel)]="medication.categoryId">
+                    <mat-option *ngFor="let c of categories" [value]="c.id">
+                        {{c?.name['ru']}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-button mat-dialog-close (click)="matDialogRef.close()">Закрыть</button>
+        <button mat-raised-button color="primary" (click)="save()">Сохранить</button>
+    </div>
+</div>

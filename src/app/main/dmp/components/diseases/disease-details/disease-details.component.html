@@ -1,0 +1,436 @@
+<div>
+    <h1 mat-dialog-title>
+        <span class="title dialog-title">{{dialogTitle}}</span>
+    </h1>
+
+    <div mat-dialog-content>
+        <mat-tab-group>
+            <mat-tab label="Основные данные">
+                <div class="event-form w-100-p" fxLayout="column" fxFlex>
+                    <mat-form-field appearance="outline" style="padding: 2%" floatLabel="always" class="w-100-p">
+                        <mat-label>Код</mat-label>
+                        <input matInput name="code" [(ngModel)]="disease.code" required>
+                    </mat-form-field>
+                    <mat-radio-group class="p-1" fxLayout="row" [(ngModel)]="selectedLanguage"
+                                     fxLayoutAlign="space-between center">
+                        <mat-radio-button [value]="'kz'">
+                            Казахский
+                        </mat-radio-button>
+                        <mat-radio-button [value]="'ru'">
+                            Русский
+                        </mat-radio-button>
+                        <mat-radio-button [value]="'en'">
+                            Английский
+                        </mat-radio-button>
+                    </mat-radio-group>
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                        <mat-label>Наименование</mat-label>
+                        <input matInput name="name" [(ngModel)]="disease.name[selectedLanguage]" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                        <mat-label>Описание</mat-label>
+                        <textarea matInput [(ngModel)]="disease.description[selectedLanguage]" name="description"
+                                  rows="5"
+                                  required></textarea>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                        <mat-label>Категории</mat-label>
+                        <mat-select [(ngModel)]="disease.categoryId">
+                            <mat-option *ngFor="let c of categories" [value]="c.id">
+                                {{c.name['ru']}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </mat-tab>
+            <mat-tab label="Для шаблона">
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Субъективные данные
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 600px;">
+                            <textarea rows="20" matInput placeholder="Текст"
+                                      [(ngModel)]="disease.template.subDannie"></textarea>
+                        </mat-form-field>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Анамнез болезни
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 600px;">
+                            <textarea rows="20" matInput placeholder="Текст"
+                                      [(ngModel)]="disease.template.anamBol"></textarea>
+                        </mat-form-field>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Анамнез жизни
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 600px;">
+                            <textarea rows="20" matInput placeholder="Текст"
+                                      [(ngModel)]="disease.template.anamZhiz"></textarea>
+                        </mat-form-field>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Объективные данные
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 600px;">
+                            <textarea rows="20" matInput placeholder="Текст"
+                                      [(ngModel)]="disease.template.objDannie"></textarea>
+                        </mat-form-field>
+                    </mat-expansion-panel>
+
+                    <!--------------Лабораторные анализы-------------->
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Лабораторные анализы
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <mat-radio-group aria-label="Выберите опцию для добавления анализов"
+                                             [(ngModel)]="labOptions">
+                                <mat-radio-button [value]="true">Фильтровать по категориям</mat-radio-button>&nbsp;
+                                <mat-radio-button [value]="false">Поиск по названию</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <div *ngIf="labOptions === false">
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                                <div fxFlex="10">
+                                    <button mat-raised-button color="accent" (click)="searchLaboratories()">
+                                        <mat-icon>search</mat-icon>
+                                        Поиск
+                                    </button>
+                                </div>
+                                <div fxFlex="90">
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-icon *ngIf="showX === true" matSuffix class="secondary-text"
+                                                  (click)="reload()"
+                                                  style="cursor: pointer; color: red;">clear
+                                        </mat-icon>
+                                        <input matInput (keyup)="checkKeyup($event.target.value)"
+                                               [(ngModel)]="searchString"
+                                               placeholder="Поиск">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div *ngFor="let laboratory of laboratories" style="padding-bottom: 5px;" fxLayout="row"
+                                 fxLayoutAlign="start center">
+                                <div fxFlex="75">
+                                <span>
+                                    <span style="font-size: 16px;">{{laboratory.name['ru']}}</span>
+                                    <mat-icon style="color: green;"
+                                              *ngIf="selectedLaboratories.includes(laboratory.id)">check</mat-icon>
+                                    <mat-icon style="color: red; cursor: pointer"
+                                              *ngIf="selectedLaboratories.includes(laboratory.id)"
+                                              (click)="deselect(laboratory, 'Laboratory')">close</mat-icon>
+                                </span>
+                                </div>
+                                <div fxFlex="25" *ngIf="!selectedLaboratories.includes(laboratory.id)">
+                                    <button mat-raised-button color="primary"
+                                            (click)="select(laboratory, 'Laboratory')">
+                                        Выбрать
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="labOptions === true">
+                            <mat-form-field class="w-30-p">
+                                <mat-label>Выберите категорию</mat-label>
+                                <mat-select placeholder="Выберите категорию"
+                                            (selectionChange)="loadLaboratoriesByCategoryId($event.value)">
+                                    <mat-option *ngFor="let group of categorizedLaboratories" [value]="group">
+                                        {{group.category.name['ru']}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field class="w-70-p">
+                                <mat-label>Выберите анализы</mat-label>
+                                <mat-select placeholder="Выберите анализы"
+                                            (selectionChange)="selections($event.value, 'Laboratory')"
+                                            [formControl]="laboratoriesControl"
+                                            [multiple]="true">
+                                    <mat-optgroup *ngFor="let group of changedCategorizedLaboratories"
+                                                  [label]="group.category.name['ru']">
+                                        <mat-option *ngFor="let laboratory of group.laboratories"
+                                                    [value]="laboratory.id">
+                                            {{laboratory.name['ru']}}
+                                        </mat-option>
+                                    </mat-optgroup>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 600px;">
+                            <textarea rows="20" matInput placeholder="Текст"
+                                      [(ngModel)]="disease.template.labAnalysText"></textarea>
+                        </mat-form-field>
+                    </mat-expansion-panel>
+
+                    <!-- ------------Процедуры и вмешательства---------------------->
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Процедуры и вмешательства
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <mat-radio-group aria-label="Выберите опцию для добавления анализов"
+                                             [(ngModel)]="procOptions">
+                                <mat-radio-button [value]="true">Фильтровать по категориям</mat-radio-button>&nbsp;
+                                <mat-radio-button [value]="false">Поиск по названию</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <div *ngIf="procOptions === false">
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                                <div fxFlex="10">
+                                    <button mat-raised-button color="accent"
+                                            (click)="searchProceduresAndInterventions()">
+                                        <mat-icon>search</mat-icon>
+                                        Поиск
+                                    </button>
+                                </div>
+                                <div fxFlex="90">
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-icon *ngIf="showX === true" matSuffix class="secondary-text"
+                                                  (click)="reload()"
+                                                  style="cursor: pointer; color: red;">clear
+                                        </mat-icon>
+                                        <input matInput (keyup)="checkKeyup($event.target.value)"
+                                               [(ngModel)]="searchString"
+                                               placeholder="Поиск">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div *ngFor="let procedure of proceduresAndInterventions" style="padding-bottom: 5px;"
+                                 fxLayout="row" fxLayoutAlign="start center">
+                                <div fxFlex="75">
+                                    <span>
+                                        <span style="font-size: 16px;">{{procedure.name['ru']}}</span>
+                                        <mat-icon style="color: green;"
+                                                  *ngIf="selectedProceduresAndInterventions.includes(procedure.id)">check</mat-icon>
+                                        <mat-icon style="color: red; cursor: pointer"
+                                                  *ngIf="selectedProceduresAndInterventions.includes(procedure.id)"
+                                                  (click)="deselect(procedure, 'ProceduresAndInterventions')">close</mat-icon>
+                                    </span>
+                                </div>
+                                <div fxFlex="25" *ngIf="!selectedProceduresAndInterventions.includes(procedure.id)">
+                                    <button mat-raised-button color="primary"
+                                            (click)="select(procedure, 'ProceduresAndInterventions')">Выбрать
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="procOptions === true">
+                            <mat-form-field class="w-30-p">
+                                <mat-label>Выберите категорию</mat-label>
+                                <mat-select placeholder="Выберите категорию"
+                                            (selectionChange)="loadProceduresAndInterventionsByCategoryId($event.value)">
+                                    <mat-option *ngFor="let group of categorizedProceduresAndInterventions"
+                                                [value]="group">
+                                        {{group.category.name['ru']}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field class="w-70-p">
+                                <mat-label>Выберите процедуру и вмешательство</mat-label>
+                                <mat-select placeholder="Выберите процедуру и вмешательство"
+                                            (selectionChange)="selections($event.value, 'ProceduresAndInterventions')"
+                                            [formControl]="proceduresAndInterventionsControl"
+                                            [multiple]="true">
+                                    <mat-optgroup *ngFor="let group of changedProceduresAndInterventions"
+                                                  [label]="group.category.name['ru']">
+                                        <mat-option
+                                                *ngFor="let procedureAndIntervention of group.proceduresAndInterventions"
+                                                [value]="procedureAndIntervention.id">
+                                            {{procedureAndIntervention.name['ru']}}
+                                        </mat-option>
+                                    </mat-optgroup>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 600px;">
+                            <textarea rows="20" matInput placeholder="Текст"
+                                      [(ngModel)]="disease.template.procAndInterText"></textarea>
+                        </mat-form-field>
+                    </mat-expansion-panel>
+
+                    <!---------------Диагностические методы------------->
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Диагностические методы
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <mat-radio-group aria-label="Выберите опцию"
+                                             [(ngModel)]="diagOptions">
+                                <mat-radio-button [value]="true">Фильтровать по категориям</mat-radio-button>&nbsp;
+                                <mat-radio-button [value]="false">Поиск по названию</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <div *ngIf="diagOptions === false">
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                                <div fxFlex="10">
+                                    <button mat-raised-button color="accent" (click)="searchDiagnostics()">
+                                        <mat-icon>search</mat-icon>
+                                        Поиск
+                                    </button>
+                                </div>
+                                <div fxFlex="90">
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-icon *ngIf="showX === true" matSuffix class="secondary-text"
+                                                  (click)="reload()"
+                                                  style="cursor: pointer; color: red;">clear
+                                        </mat-icon>
+                                        <input matInput (keyup)="checkKeyup($event.target.value)"
+                                               [(ngModel)]="searchString"
+                                               placeholder="Поиск">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div *ngFor="let diagnostic of diagnostics" style="padding-bottom: 5px;" fxLayout="row"
+                                 fxLayoutAlign="start center">
+                                <div fxFlex="75">
+                                <span>
+                                    <span style="font-size: 16px;">{{diagnostic.name}}</span>
+                                    <mat-icon style="color: green;" *ngIf="selectedDiagnostics.includes(diagnostic.id)">check</mat-icon>
+                                    <mat-icon style="color: red; cursor: pointer"
+                                              *ngIf="selectedDiagnostics.includes(diagnostic.id)"
+                                              (click)="deselect(diagnostic, 'Diagnostics')">close</mat-icon>
+                                </span>
+                                </div>
+                                <div fxFlex="25" *ngIf="!selectedDiagnostics.includes(diagnostic.id)">
+                                    <button mat-raised-button color="primary"
+                                            (click)="select(diagnostic, 'Diagnostics')">
+                                        Выбрать
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="diagOptions === true">
+                            <mat-form-field class="w-30-p">
+                                <mat-label>Выберите категорию</mat-label>
+                                <mat-select placeholder="Выберите категорию"
+                                            (selectionChange)="loadDiagnosticsByCategoryId($event.value)">
+                                    <mat-option *ngFor="let group of categorizedDiagnostics" [value]="group">
+                                        {{group.category.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field class="w-70-p">
+                                <mat-label>Выберите диагностические методы</mat-label>
+                                <mat-select placeholder="Выберите диагностические методы"
+                                            (selectionChange)="selections($event.value, 'Diagnostics')"
+                                            [formControl]="diagnosticsControl"
+                                            [multiple]="true">
+                                    <mat-optgroup *ngFor="let group of changedCategorizedDiagnostics"
+                                                  [label]="group.category.name['ru']">
+                                        <mat-option *ngFor="let diagnostic of group.diagnostics"
+                                                    [value]="diagnostic.id">
+                                            {{diagnostic.name['ru']}}
+                                        </mat-option>
+                                    </mat-optgroup>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 600px;">
+                            <textarea rows="20" matInput placeholder="Текст"
+                                      [(ngModel)]="disease.template.diagMethodsText"></textarea>
+                        </mat-form-field>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Диагноз Заключение
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 600px;">
+                            <textarea rows="20" matInput placeholder="Текст"
+                                      [(ngModel)]="disease.template.diagZakl"></textarea>
+                        </mat-form-field>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Лекарственые назначения
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 600px;">
+                            <textarea rows="20" matInput placeholder="Текст"
+                                      [(ngModel)]="disease.template.lekNaznText"></textarea>
+                        </mat-form-field>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Врачебные рекомендации
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 600px;">
+                            <textarea rows="20" matInput placeholder="Текст"
+                                      [(ngModel)]="disease.template.vrachRec"></textarea>
+                        </mat-form-field>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Советы по питанию
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 600px;">
+                            <textarea rows="20" matInput placeholder="Текст"
+                                      [(ngModel)]="disease.template.sovNomadiet"></textarea>
+                        </mat-form-field>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Информационные материалы
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 600px;">
+                            <textarea rows="20" matInput placeholder="Текст"
+                                      [(ngModel)]="disease.template.infoMat"></textarea>
+                        </mat-form-field>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+
+    <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end start">
+        <button mat-button mat-dialog-close (click)="matDialogRef.close()">Закрыть</button>
+        <button mat-raised-button color="primary" (click)="save()">Сохранить</button>
+    </div>
+</div>
+
+
+<!--<div class="dialog-content-wrapper w-100">-->
+<!--<mat-toolbar class="mat-accent m-0">-->
+<!--<mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">-->
+<!--<span class="title dialog-title">{{dialogTitle}}</span>-->
+<!--</mat-toolbar-row>-->
+<!--</mat-toolbar>-->
+<!--<div mat-dialog-content class="p-24 m-0">-->
+
+<!--</div>-->
+
+
+<!--</div>-->
+<!--<div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">-->
+<!--<button mat-button mat-dialog-close (click)="matDialogRef.close()">Закрыть</button>-->
+<!--<button mat-raised-button color="primary" (click)="save()">Сохранить</button>-->
+<!--</div>-->

@@ -1,0 +1,61 @@
+<mat-dialog-content>
+    <h2>Video add or edit dialog </h2>
+    <div fxLayout="column">
+        <div class="flex-p">
+            <mat-form-field color="accent" appearance="outline" class="w-100">
+                <mat-label>Наименование</mat-label>
+                <input matInput name="Наименование" placeholder="Наименование" [(ngModel)]="videoContent.name">
+            </mat-form-field>
+
+            <mat-form-field color="accent" appearance="outline" class="w-100">
+                <mat-label>code</mat-label>
+                <input matInput name="code" placeholder="code" [(ngModel)]="videoContent.code">
+            </mat-form-field>
+
+            <mat-form-field  color="accent" appearance="outline" class="w-100">
+                <mat-label>{{'Disease'}}</mat-label>
+                <mat-select matNativeControl multiple [(ngModel)]="videoContent.diseaseIds">
+<!--                    <mat-option>-->
+<!--                        <ngx-mat-select-search [placeholderLabel]="'Поиск ...'"-->
+<!--                                               [noEntriesFoundLabel]="'не найдено'"-->
+<!--                                               (keyup)=" filterMyOptions($event,'subject') "></ngx-mat-select-search>-->
+<!--                    </mat-option>-->
+                    <mat-option [value]="">Все</mat-option>
+                    <mat-option *ngFor="let dis of diseases"
+                                [value]="dis.id">{{dis.name['additionalProp1' | translate]}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+
+            <div appearance="outline" floatLabel="always" class="w-100-p">
+                VIDEO :
+                <input id="fileUpload" name="fileUpload" type="file"
+                       style="display:none;"/>
+                <button mat-raised-button color="warn" rows="5"
+                        (click)="addFile('videoId')" type="button">
+                    <mat-icon>image</mat-icon>
+                    {{'Upload' | translate}}
+                </button>
+                <br>
+                <br>
+
+                <div *ngIf="videoContent?.videoId" class="label-box">
+                    <vg-player class="video-pl mrgn-all-md mrgn-b-lg">
+                        <video [vgMedia]="media" #media id="singleVideo" preload="auto" controls>
+                            <source [src]="((adminUrl + '/video/test/' + videoContent?.videoId))"
+                                    type="video/mp4">
+                        </video>
+                    </vg-player>
+                </div>
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+    <button mat-raised-button color="primary" *ngIf="pageType==='edit'" (click)="saveVideoContent()"><span>Изменить</span></button>
+    <button mat-raised-button color="primary" *ngIf="pageType!=='edit'" (click)="saveVideoContent()"><span>Создать</span></button>
+    <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+</div>

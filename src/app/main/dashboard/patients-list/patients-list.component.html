@@ -1,0 +1,71 @@
+<table mat-table
+       [dataSource]="datasource"
+       class="mat-elevation-z8">
+
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Время</th>
+        <td mat-cell *matCellDef="let row">
+            {{row.user.name}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="surname">
+        <th mat-header-cell *matHeaderCellDef> Пациент</th>
+        <td mat-cell *matCellDef="let row"><a routerLink="/patient-detail">
+            {{row.user.surname}} </a></td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Врач</th>
+        <td mat-cell *matCellDef="let row">
+            {{row.user.email}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="mobilePhone">
+        <th mat-header-cell *matHeaderCellDef> Специальность</th>
+        <td mat-cell *matCellDef="let row"> <!--{{element.symbol}}-->
+            {{row.user.mobilePhone}}
+        </td>
+    </ng-container>
+
+    <!-- idn Column -->
+    <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Статус</th>
+        <td mat-cell *matCellDef="let row">
+            <span *ngIf="row.healthStatus === 1">
+                <mat-icon [ngClass]="'red-500-fg'"
+                          matTooltip="Показания отклонены от нормы">warning</mat-icon>
+            </span>
+            <span *ngIf="row.healthStatus === 2">
+                                    <mat-icon [ngClass]="'yellow-500-fg'" matTooltip="Показания в 20% от границы норм">warning</mat-icon>
+                                </span>
+            <span *ngIf="row.healthStatus === 3">
+                                    <mat-icon [ngClass]="'green-500-fg'"
+                                              matTooltip="Показания в норме">warning</mat-icon>
+                                </span>
+            <span *ngIf="row.healthStatus === 4">
+                                    <mat-icon [ngClass]="'grey-500-fg'"
+                                              matTooltip="Устройство не настроено">warning</mat-icon>
+                                </span>
+            <span *ngIf="row.healthStatus === 5">
+                                    <mat-icon [ngClass]="'grey-600-fg'"
+                                              matTooltip="Нет данныз с браслета">warning</mat-icon>
+                                </span>
+            <span *ngIf="row.healthStatus === 6">
+                                    <mat-icon [ngClass]="'grey-800-fg'" matTooltip="Устройство не зарегистрировано">warning</mat-icon>
+                                </span>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Действие</th>
+        <td mat-cell *matCellDef="let row"> <!--{{element.symbol}}-->
+            <button mat-raised-button color="primary" (click)="operDialog()">Просмотреть визиты</button>
+        </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

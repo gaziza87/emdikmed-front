@@ -1,0 +1,79 @@
+<mat-dialog-content>
+    <mat-card>
+        <mat-card-header fxLayoutAlign="center">
+            <mat-card-subtitle><h2>{{dialogTitle}} <span
+                    *ngIf="action ==='edit'">{{ org.name['lan.cur' | translate]}}</span></h2></mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <div fxLayout="column" fxLayoutAlign="center">
+
+                <app-lang-util
+                        [isTextArea]="false"
+                        label="{{'Наименования организации'}}"
+                        [source]="org.name"
+                        (output)="catchFieldValue($event, 'name')">
+                    {{org.name}}
+                </app-lang-util>
+
+                <table cellspacing="0" class="w-100">
+                    <tr>
+                        <td>
+                            <mat-form-field class="w-100">
+                                <input matInput placeholder="БИК номер" [(ngModel)]="org.bik">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="w-100">
+                                <input matInput placeholder="Код организации"
+                                       [(ngModel)]="org.code">
+                            </mat-form-field>
+                        </td>
+                        <td>
+
+                            <mat-form-field class="w-100">
+                                <mat-label>Тип организации</mat-label>
+                                <mat-select [(ngModel)]="org.orgTypeCode">
+                                    <mat-option value="gos">
+                                        Государственный
+                                    </mat-option>
+                                    <mat-option value="IP">
+                                        Частный
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                        </td>
+                    </tr>
+                </table>
+
+                <mat-form-field class="w-100">
+                    <input matInput placeholder="Адрес"
+                           [(ngModel)]="org.address">
+                </mat-form-field>
+
+                <table cellspacing="0" class="w-100">
+                    <tr>
+                        <td>
+                            <mat-form-field class="w-100">
+                                <!--                                [(ngModel)]="org.phone"-->
+                                <input matInput placeholder="Телефон номер">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="w-100">
+                                <input matInput placeholder="Количество сотрудника"
+                                       [(ngModel)]="org.employeeCount">
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+</mat-dialog-content>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+    <button mat-raised-button color="primary" *ngIf="action==='edit'" (click)="save()"><span>Изменить</span></button>
+    <button mat-raised-button color="primary" *ngIf="action!=='edit'" (click)="save()"><span>Создать</span></button>
+    <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+</div>

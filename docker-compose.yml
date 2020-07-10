@@ -1,0 +1,8 @@
+version: '2.2'
+
+services:
+    web:
+        image: git.beeset.kz:5050/blackshot/emdikmed-web:latest
+        ports:
+            - '80:80'
+            - '443:443'

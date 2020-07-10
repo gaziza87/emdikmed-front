@@ -1,0 +1,90 @@
+<div>
+    <h1 mat-dialog-title>
+        <span class="title dialog-title">{{dialogTitle}}</span>
+    </h1>
+    <div mat-dialog-content class="p-24 m-0" >
+
+        <div class="event-form w-100-p" fxLayout="column" fxFlex>
+            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                <mat-label>Код</mat-label>
+                <input matInput name="code" [(ngModel)]="protocol.code" required>
+            </mat-form-field>
+            <mat-radio-group fxLayout="row" [(ngModel)]="selectedLanguage" fxLayoutAlign="space-between center">
+                <mat-radio-button [value]="'kz'">
+                    Казахский
+                </mat-radio-button>
+                <mat-radio-button [value]="'ru'">
+                    Русский
+                </mat-radio-button>
+                <mat-radio-button [value]="'en'">
+                    Английский
+                </mat-radio-button>
+            </mat-radio-group>
+            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                <mat-label>Наименование</mat-label>
+                <input matInput name="name" [(ngModel)]="protocol.name[selectedLanguage]" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                <mat-label>Описание</mat-label>
+                <textarea matInput [(ngModel)]="protocol.description[selectedLanguage]" name="description" rows="5"
+                          required></textarea>
+            </mat-form-field>
+            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                <mat-label>Заболевание</mat-label>
+                <mat-select [(ngModel)]="protocol.diseaseId">
+                    <mat-option *ngFor="let c of disease" [value]="c.id">
+                        {{c?.name['ru']}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!--<div class="textarea-wrapper"  style="display: block!important;">
+                <div style="text-align:center">
+                    &lt;!&ndash;<app-template-file-upload&ndash;&gt;
+                    <div layout="row" layout-wrap>
+                        <div fxFlex="80">
+                            <span class="mat-title" *ngIf="this.protocol.fileId">
+                                Скачать:
+                                <button mat-button (click)="downloadFile(this.protocol.fileId, this.protocol.name)">
+                                Документ
+                                </button>
+                            </span>
+                        </div>
+                        <div fxFlex="20">
+                            &lt;!&ndash;(complete)="onFileComplete($event)"></app-template-file-upload>&ndash;&gt;
+                            <button mat-button color="accent" (click)="onClick()" type="button" *ngIf="showUpload">
+                                <mat-icon>arrow_upward</mat-icon>
+                                <span *ngIf="!this.protocol.fileId">Загрузить документ</span>
+                                <span *ngIf="this.protocol.fileId">Изменить документ</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <br/>
+
+                    <ul>
+                        <li *ngFor="let file of files" [@fadeInOut]="file.state">
+                            <mat-progress-bar [value]="file.progress"></mat-progress-bar>
+                            <span id="file-label">
+                                {{file.data.name}}
+                                <a title="Retry" (click)="retryFile(file)" *ngIf="file.canRetry">
+                                    <mat-icon>refresh</mat-icon>
+                                </a>
+                                <a title="Cancel" (click)="cancelFile(file)" *ngIf="file.canCancel">
+                                    <mat-icon>cancel</mat-icon>
+                                </a>
+                            </span>
+                        </li>
+                    </ul>
+                    <input type="file" id="fileUpload" name="fileUpload"
+                           style="display:none;"/>
+                </div>
+            </div>-->
+
+        </div>
+    </div>
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-button mat-dialog-close (click)="matDialogRef.close()">Закрыть</button>
+        <button mat-raised-button color="primary" (click)="save()">Сохранить</button>
+    </div>
+</div>

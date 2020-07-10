@@ -1,0 +1,363 @@
+<div class="content-card">
+    <!--<h1>{{user.surname}} {{user.name}}</h1>-->
+    <mat-tab-group>
+        <mat-tab label="Общая инфа">
+
+            <div fxLayout="column" fxLayout.gt-sm="row wrap">
+
+                <div fxFlex="100" class="flex-p">
+
+                    <mat-sidenav-container>
+                        <mat-sidenav #sidenav [opened]="sidenavOpen" [mode]="sidenavOpen ? 'side' : 'over'"
+                                     class="mailbox-sidenav mat-elevation-z1">
+                            <mat-card class="custom-card">
+                                <mat-card-header class="bg-primary p-1" fxLayoutAlign="space-between center">
+                                    <mat-card-title class="m-0"><h3>Личные данные</h3></mat-card-title>
+                                    <button mat-icon-button (click)="sidenav.toggle()" (click)="change(true)">
+                                        <mat-icon *ngIf="check">close</mat-icon>
+                                    </button>
+                                </mat-card-header>
+                                <mat-card-content class="p-1">
+
+                                    <mat-expansion-panel class="m-0">
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title><b>Личные данные</b></mat-panel-title>
+                                            <mat-panel-description>
+
+                                            </mat-panel-description>
+                                        </mat-expansion-panel-header>
+                                        <mat-nav-list>
+                                            <mat-list>
+                                                <div *ngIf="patient" style="position: relative;">
+                                                    <mat-divider></mat-divider>
+                                                    <mat-list-item> ИИН : {{patient.idn}}</mat-list-item>
+                                                    <mat-divider></mat-divider>
+                                                    <mat-list-item> Имя : {{patient.name}}</mat-list-item>
+                                                    <mat-divider></mat-divider>
+                                                    <mat-list-item> Фамилия : {{patient.surname}}</mat-list-item>
+                                                    <mat-divider></mat-divider>
+                                                    <mat-list-item> e-mail: {{patient.email}}</mat-list-item>
+                                                    <mat-divider></mat-divider>
+                                                    <mat-list-item> Адрес: {{patient.address}}</mat-list-item>
+                                                    <mat-divider></mat-divider>
+                                                    <mat-list-item> Телефон: {{patient.mobilePhone}}</mat-list-item>
+                                                </div>
+                                            </mat-list>
+                                        </mat-nav-list>
+                                    </mat-expansion-panel>
+                                    <br>
+
+                                    <mat-expansion-panel class="m-2" *ngIf="visit && visit.measurement">
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title>Измерения</mat-panel-title>
+                                            <mat-panel-description>Рост и вес</mat-panel-description>
+                                        </mat-expansion-panel-header>
+                                        <mat-form-field>
+                                            <input matInput placeholder="Рост" [(ngModel)]="visit.measurement.height">
+                                        </mat-form-field>
+                                        <mat-form-field>
+                                            <input matInput placeholder="Вес" [(ngModel)]="visit.measurement.weight">
+                                        </mat-form-field>
+                                    </mat-expansion-panel>
+                                    <br>
+
+                                    <mat-expansion-panel class="m-0" *ngIf="visit && visit.measurement">
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title>Артериальное давление</mat-panel-title>
+                                            <mat-panel-description></mat-panel-description>
+                                        </mat-expansion-panel-header>
+                                        <mat-label>1 Измерение</mat-label>
+                                        <br>
+                                        <mat-form-field>
+                                            <input matInput placeholder="Систолическое" [(ngModel)]="visit.measurement.adSys[0]">
+                                        </mat-form-field>
+                                        <mat-form-field>
+                                            <input matInput placeholder="Диостолическое" [(ngModel)]="visit.measurement.adDys[0]">
+                                        </mat-form-field>
+                                        <br>
+                                        <mat-label>2 Измерение</mat-label>
+                                        <br>
+                                        <mat-form-field>
+                                            <input matInput placeholder="Систолическое" [(ngModel)]="visit.measurement.adSys[1]">
+                                        </mat-form-field>
+                                        <mat-form-field>
+                                            <input matInput placeholder="Диостолическое" [(ngModel)]="visit.measurement.adDys[1]">
+                                        </mat-form-field>
+                                        <br>
+                                        <mat-label>3 Измерение</mat-label>
+                                        <br>
+                                        <mat-form-field>
+                                            <input matInput placeholder="Систолическое" [(ngModel)]="visit.measurement.adSys[2]">
+                                        </mat-form-field>
+                                        <mat-form-field>
+                                            <input matInput placeholder="Диостолическое" [(ngModel)]="visit.measurement.adDys[2]">
+                                        </mat-form-field>
+                                    </mat-expansion-panel>
+
+                                </mat-card-content>
+                            </mat-card>
+                        </mat-sidenav>
+
+                        <div *ngIf="visitContent">
+                            <mat-card class="custom-card">
+                                <mat-card-header class=" p-1" fxLayout="row" fxLayoutAlign="space-between center">
+                                    <button mat-icon-button (click)="sidenav.toggle()" (click)="change(false)">
+                                        <mat-icon *ngIf="!check">list</mat-icon>
+                                    </button>
+                                    <mat-card-title class="m-0"><h3>Календарь визитов</h3></mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <div fxFlex="33" class="flex-p">
+
+                                        <mat-vertical-stepper #stepper>
+                                            <mat-step>
+                                            </mat-step>
+                                            <mat-step>
+                                            </mat-step>
+                                            <mat-step>
+                                                <ng-template matStepLabel>Done</ng-template>
+                                                <p>You are now done.</p>
+                                                <div>
+                                                    <button mat-button matStepperPrevious>Back</button>
+                                                    <button mat-button (click)="stepper.reset()">Reset</button>
+                                                </div>
+                                            </mat-step>
+                                        </mat-vertical-stepper>
+                                    </div>
+                                    <div fxFlex="33" class="flex-p">
+                                        <mat-vertical-stepper #stepper>
+                                            <mat-step>
+                                            </mat-step>
+                                            <mat-step>
+                                            </mat-step>
+                                            <mat-step>
+                                                <ng-template matStepLabel>Done</ng-template>
+                                                <p>You are now done.</p>
+                                                <div>
+                                                    <button mat-button matStepperPrevious>Back</button>
+                                                    <button mat-button (click)="stepper.reset()">Reset</button>
+                                                </div>
+                                            </mat-step>
+                                        </mat-vertical-stepper>
+                                    </div>
+                                    <div fxFlex="33" class="flex-p">
+                                        <mat-vertical-stepper #stepper>
+                                            <mat-step>
+                                            </mat-step>
+                                            <mat-step>
+                                            </mat-step>
+                                            <mat-step>
+                                                <ng-template matStepLabel>Done</ng-template>
+                                                <p>You are now done.</p>
+                                                <div>
+                                                    <button mat-button matStepperPrevious>Back</button>
+                                                    <button mat-button (click)="stepper.reset()">Reset</button>
+                                                </div>
+                                            </mat-step>
+                                        </mat-vertical-stepper>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                            <br>
+                            <mat-expansion-panel class="m-0" >
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title class="m-0"><h3>Данные</h3></mat-panel-title>
+                                    <mat-panel-description></mat-panel-description>
+                                </mat-expansion-panel-header>
+
+                                <mat-expansion-panel class="m-0">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title class="m-0"><h3>Субъективные данные</h3></mat-panel-title>
+                                        <button mat-button color="primary" (click)="openDialog('diseases')">Заболевания
+                                        </button>
+                                        <mat-panel-description>Жалобы пациента в настоящее время</mat-panel-description>
+                                    </mat-expansion-panel-header>
+                                    <textarea id="subDannie" rows="6" (click)="setRows('subDannie')" matInput
+                                              [(ngModel)]="visitContent.diseaseData.subDannie"></textarea>
+                                </mat-expansion-panel>
+                                <br>
+
+                                <mat-expansion-panel class="m-0">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title class="m-0"><h3>Анамнез болезни</h3></mat-panel-title>
+                                        <mat-panel-description>Начало заболевания, динамика симптомов с момента начала
+                                            заболевания
+                                            до момента обращения
+                                        </mat-panel-description>
+                                    </mat-expansion-panel-header>
+                                    <textarea matInput placeholder="Textarea"
+                                              [(ngModel)]="visitContent.diseaseData.anamBol"
+                                    > </textarea>
+                                </mat-expansion-panel>
+                                <br>
+
+
+                                <mat-expansion-panel class="m-0">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title class="m-0"><h3>Анамнез жизни</h3></mat-panel-title>
+                                        <mat-panel-description>Перенесённые ранее заболевания. Также изучаются условия
+                                            жизни
+                                            пациента.
+                                        </mat-panel-description>
+                                    </mat-expansion-panel-header>
+                                    <textarea matInput placeholder="Textarea" [(ngModel)]="visitContent.diseaseData.anamZhiz"> </textarea>
+                                </mat-expansion-panel>
+                                <br>
+
+
+                                <mat-expansion-panel class="m-0">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title class="m-0"><h3>Объективные данные</h3></mat-panel-title>
+                                        <mat-panel-description>это обследование, который определяет статус пациента в
+                                            настоящее
+                                            время.
+                                        </mat-panel-description>
+                                    </mat-expansion-panel-header>
+                                    <textarea matInput placeholder="Textarea" [(ngModel)]="visitContent.diseaseData.objDannie"> </textarea>
+                                </mat-expansion-panel>
+                                <br>
+                                <mat-expansion-panel class="m-0">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title class="m-0"><h3>Лабораторные данные</h3></mat-panel-title>
+                                        <button mat-button color="primary" (click)="openDialog('laboratory')">Лаборатория
+                                        </button>
+                                    </mat-expansion-panel-header>
+                                    <textarea matInput placeholder="Textarea" [(ngModel)]="visitContent.diseaseData.labAnalysText"></textarea>
+                                    <button mat-raised-button>Отправить лаборанту</button>
+                                </mat-expansion-panel>
+                                <br>
+
+                                <mat-expansion-panel class="m-0">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title class="m-0"><h3>Диагностические методы</h3></mat-panel-title>
+                                        <button mat-button color="primary" (click)="openDialog('diagnostics')">Диагностика
+                                        </button>
+                                    </mat-expansion-panel-header>
+                                    <textarea matInput placeholder="Textarea" [(ngModel)]="visitContent.diseaseData.diagMethodsText"></textarea>
+                                </mat-expansion-panel>
+                                <br>
+
+                                <mat-expansion-panel class="m-0">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title class="m-0"><h3>Предварительный/Заключительный диагноз</h3>
+                                        </mat-panel-title>
+
+                                    </mat-expansion-panel-header>
+                                    <textarea matInput placeholder="Textarea" [(ngModel)]="visitContent.diseaseData.diagZakl"></textarea>
+                                </mat-expansion-panel>
+                                <br>
+
+                                <mat-expansion-panel class="m-0">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title class="m-0"><h3>Процедуры и вмешательства</h3>
+                                        </mat-panel-title>
+                                        <button mat-button color="primary" (click)="openDialog('proceduresAndInterventions')">
+                                            Процедуры/вмешательства
+                                        </button>
+                                    </mat-expansion-panel-header>
+                                    <textarea matInput placeholder="Textarea" [(ngModel)]="visitContent.diseaseData.procAndInterText"> </textarea>
+                                </mat-expansion-panel>
+                                <br>
+
+                                <mat-expansion-panel class="m-0">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title class="m-0"><h3>Лекарственные назначения</h3>
+                                        </mat-panel-title>
+                                        <button mat-button color="primary" (click)="openDialog('medication')">Лекарства
+                                        </button>
+                                    </mat-expansion-panel-header>
+                                    <textarea matInput placeholder="Textarea" [(ngModel)]="visitContent.diseaseData.diagMethodsText"> </textarea>
+                                </mat-expansion-panel>
+                                <br>
+
+                                <mat-expansion-panel class="m-0">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title class="m-0"><h3>Врачебные рекомендации</h3>
+                                        </mat-panel-title>
+                                    </mat-expansion-panel-header>
+
+                                    <textarea matInput placeholder="Textarea" [(ngModel)]="visitContent.diseaseData.vrachRec"></textarea>
+                                </mat-expansion-panel>
+                                <br>
+
+                                <br>
+                                <mat-form-field style="width: 100%;">
+                                    <input matInput [min]="minDate" [matDatepicker]="picker6"
+                                           placeholder="Следующий визит">
+                                    <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+                                    <mat-datepicker touchUi="true" #picker6></mat-datepicker>
+                                </mat-form-field>
+
+                            </mat-expansion-panel>
+                            <br>
+                            <div fxLayout="row" fxLayoutAlign="space-around center">
+                                <button mat-raised-button>Отправить документ на почту
+                                    <mat-icon>send</mat-icon>
+                                </button>
+
+                                <button mat-raised-button>Скачать бланк информационного соглация
+                                    <mat-icon>cloud_download</mat-icon>
+                                </button>
+                                <button mat-raised-button>Паспорт здаровья
+                                    <mat-icon>next_week</mat-icon>
+                                </button>
+                            </div>
+                            <br>
+                            <mat-checkbox class="m-0" [(ngModel)]="visitContent.checkFullFill">Я подтверждаю, что данная форма заполнена полностью</mat-checkbox>
+                            <br>
+                            <br>
+                            <button mat-raised-button (click)="updateVisitContent()">Завершить прием
+                                <mat-icon>done</mat-icon>
+                            </button>
+                        </div>
+
+                    </mat-sidenav-container>
+
+                </div>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Показатель браслета">
+            <div fxLayout="column">
+                <div class="flex-p">
+                    <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
+                        <ng-container matColumnDef="position">
+                            <mat-header-cell *matHeaderCellDef> Параметр</mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.position}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef> Значение</mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.name}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="weight">
+                            <mat-header-cell *matHeaderCellDef> Референсные значения</mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.weight}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="symbol">
+                            <mat-header-cell *matHeaderCellDef> Статус</mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <mat-icon>warning</mat-icon>
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="button">
+                            <mat-header-cell *matHeaderCellDef> Действие</mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <mat-icon class="p-1"><a routerLink="/patient-watch-statistic"> watch </a></mat-icon>
+                                <mat-icon><a routerLink="/patient-analytics"> trending_up </a></mat-icon>
+                            </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+                </div>
+            </div>
+
+        </mat-tab>
+        <mat-tab label="Видео">
+            <a [routerLink]="'/patient-video/${' + patient?.id + '}'">
+            </a>
+        </mat-tab>
+    </mat-tab-group>
+
+</div>

@@ -1,0 +1,45 @@
+<div fxLayout="column">
+    <div class="flex-p">
+        <mat-card>
+            <mat-card-header fxLayoutAlign="center center">
+                <mat-card-subtitle><h2>Доступные видео </h2></mat-card-subtitle>
+            </mat-card-header>
+            <mat-grid-list cols="3" rowHeight="2:1">
+                <mat-grid-tile *ngFor="let video of videoMapList">
+                    <div>
+                        <mat-video [title]="video.videoContent.name" [autoplay]="false" [preload]="true" [fullscreen]="true"
+                                   [download]="true"
+                                   color="accent" spinner="spin" poster="image.jpg">
+                            <source matVideoSource [src]="((adminUrl + '/video/test/' + video?.videoContent.videoId))" type="video/mp4">
+                        </mat-video>
+
+                    </div>
+                    <div>
+<!--                        <button mat-icon-button color="primary" (click)="Delete(video)">-->
+<!--                            <mat-icon color="warn">delete</mat-icon>-->
+<!--                        </button>-->
+
+                    </div>
+                    <!--                            <vg-player class="video-pl mrgn-all-md mrgn-b-lg">-->
+                    <!--                                <video [vgMedia]="media" #media id="singleVideo" preload="auto" controls  >-->
+                    <!--                                    <source [src]="((adminUrl + '/video/test/' + video?.videoId))"-->
+                    <!--                                            type="video/mp4">-->
+                    <!--                                </video>-->
+                    <!--                            </vg-player>-->
+
+                </mat-grid-tile>
+            </mat-grid-list>
+
+            <div style="text-align: right">
+                <button mat-icon-button color="primary" (click)="Edit(null)">
+                    <mat-icon style="margin-bottom: 10%">add_circle</mat-icon>
+                </button>
+            </div>
+
+            <mat-paginator [length]="100"
+                           [pageSize]="10"
+                           [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+        </mat-card>
+    </div>
+</div>

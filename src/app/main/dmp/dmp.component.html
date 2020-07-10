@@ -1,0 +1,65 @@
+<div>
+    <div fxLayout="row" fxLayoutAlign="space-between center" class="flex-p">
+        <div fxLayout="row">
+            <mat-button-toggle-group #controls="matButtonToggleGroup" appearance="legacy">
+                <mat-button-toggle value="add">
+                    <mat-icon>person_add</mat-icon>
+                </mat-button-toggle>
+                <mat-button-toggle value="search">
+                    <mat-icon>search</mat-icon>
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+        </div>
+
+        <form class="user-search" [class.show]="controls.value == 'search'">
+            <mat-form-field class="user-search-input">
+                <input matInput placeholder="Поиск" [(ngModel)]="searchText" name="search">
+            </mat-form-field>
+        </form>
+    </div>
+</div>
+<div class="content-car">
+    <mat-tab-group>
+        <mat-tab label="Категории">
+            <div class="tab-content p-24" fusePerfectScrollbar>
+                <app-categories></app-categories>
+            </div>
+        </mat-tab>
+        <mat-tab label="Список заболеваний">
+            <div class="tab-content p-24" fusePerfectScrollbar>
+                <app-diseases></app-diseases>
+            </div>
+        </mat-tab>
+        <mat-tab label="Лаборатория">
+            <div class="tab-content p-24" fusePerfectScrollbar>
+                <app-laboratory></app-laboratory>
+            </div>
+        </mat-tab>
+        <mat-tab label="Диагностика">
+            <div class="tab-content p-24" fusePerfectScrollbar>
+                <app-diagnostics></app-diagnostics>
+            </div>
+        </mat-tab>
+        <mat-tab label="Лекарства">
+            <div class="tab-content p-24" fusePerfectScrollbar>
+                <app-medications></app-medications>
+            </div>
+        </mat-tab>
+        <mat-tab label="Протоколы">
+            <div class="tab-content p-24" fusePerfectScrollbar>
+                <app-protocols></app-protocols>
+            </div>
+        </mat-tab>
+        <mat-tab label="Процедуры и вмешательства">
+            <div class="tab-content p-24" fusePerfectScrollbar>
+                <app-procedures-and-interventions></app-procedures-and-interventions>
+            </div>
+        </mat-tab>
+        <mat-tab label="Услуги">
+            <div class="tab-content p-24" fusePerfectScrollbar>
+                <app-services></app-services>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+
+</div>

@@ -1,0 +1,64 @@
+<div fxLayout="row" fxLayoutAlign="space-around center">
+    <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedLang">
+        <mat-radio-button *ngFor="let lang of langList"
+                          [value]="lang">{{getName(lang, ['lan.cur' | translate])}}&nbsp;&nbsp;
+        </mat-radio-button>
+    </mat-radio-group>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="space-around center"
+     *ngIf="isTextArea !== undefined && !isTextArea && langList && selectedLang">
+    <mat-form-field appearance="outline" fxFlex>
+        <mat-label>{{label}}&nbsp;</mat-label>
+        <input matInput required [(ngModel)]="source[selectedLang.code]" (ngModelChange)="catchValue()">
+    </mat-form-field>
+</div>
+<div fxLayout="row" fxLayoutAlign="space-around center"
+     *ngIf="isTextArea !== undefined && isTextArea && langList && selectedLang">
+    <mat-form-field appearance="outline" fxFlex>
+        <mat-label>{{label}}&nbsp;</mat-label>
+        <textarea matInput required [(ngModel)]="source[selectedLang.code]" (ngModelChange)="catchValue()"
+                  rows="7"></textarea>
+    </mat-form-field>
+</div>
+
+<div *ngIf="isCkEditor && langList && selectedLang" style="padding-top: 20px;">
+    <ckeditor [editor]="Editor" tagName="textarea"
+              [(ngModel)]="source[selectedLang.code]"
+              [config]="config" (ngModelChange)="catchValue()">
+    </ckeditor>
+</div>
+
+<div *ngIf="isEditor && langList && selectedLang && source">
+
+    <mat-label style="margin-bottom: 10px;">{{label}}</mat-label>
+
+
+    <div>
+        <button *ngIf="tool" mat-raised-button (click)="showAce()" color="accent">View source</button>
+        <button *ngIf="!tool" mat-raised-button (click)="showTool(selectedLang.code)"color="warn">Quill tool</button>
+<!--        <button  mat-raised-button (click)="save(selectedLang.code)" color="warn">Save</button>-->
+    </div>
+    <div style="margin: 30px">
+<!--        <mat-tab-group  mat-align-tabs="center" >-->
+<!--            <mat-tab label="Content" style="min-height: 600px">-->
+<!--                <div class="mat-tab-body-content">-->
+
+<!--                <quill-editor *ngIf="tool" [(ngModel)]="source[selectedLang.code]"-->
+<!--                              (change)="onContentChanged($event, selectedLang.code)"></quill-editor>-->
+                <ace-editor  *ngIf="!tool"
+                             (textChange)="textChange(selectedLang.code)"
+                             [(text)]="text"
+                             #editor  style="height:500px;"></ace-editor>
+<!--                </div>-->
+<!--            </mat-tab>-->
+<!--            <mat-tab label="Output" style="min-height: 600px">-->
+<!--                <div  class="ql-editor" style="height:500px;" [innerHTML]="outputRes1[selectedLang.code] | keepHtml">-->
+<!--                </div>-->
+<!--            </mat-tab>-->
+<!--        </mat-tab-group>-->
+
+    </div>
+
+
+</div>

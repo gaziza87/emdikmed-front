@@ -1,0 +1,86 @@
+<div *ngIf="isGAdmin" fxLayout="row" fxLayoutAlign="space-between center" class="flex-p">
+    <div fxLayout="row">
+        <mat-form-field>
+            <mat-label>Выберите организацию</mat-label>
+            <mat-select [(ngModel)]="orgId" disableRipple (selectionChange)="searchStaff()">
+                <mat-option [value]="">Все</mat-option>
+                <mat-option *ngFor="let org of orgList" [value]="org?.id">{{org?.name["lan.cur" | translate]}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+<div *ngIf="isGAdmin || isLAdmin" fxLayout="row" fxLayoutAlign="space-between center" class="flex-p">
+    <div fxLayout="row">
+        <mat-button-toggle-group #controls="matButtonToggleGroup" appearance="legacy">
+            <mat-button-toggle value="add" (click)="userControl(null)">
+                <mat-icon>person_add</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="search">
+                <mat-icon>search</mat-icon>
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+    </div>
+    <form class="user-search" [class.show]="controls.value == 'search'">
+        <mat-form-field class="user-search-input">
+            <input matInput placeholder="Search" [(ngModel)]="search" name="search"
+                   (keyup)="searchStaff()">
+        </mat-form-field>
+    </form>
+</div>
+<div fxLayout="row wrap">
+    <div *ngFor="let userDTO of userDTOList | paginate: { itemsPerPage: 9, currentPage: page }" fxFlex="100"
+         fxFlex.gt-md="33.3" fxFlex.md="50" class="flex-p">
+        <mat-card class="p-0">
+            <div class="bg-primary" fxLayout="row" fxLayoutAlign="space-between center">
+                <h3 class="user-name">{{userDTO.user.name}} {{userDTO.user.surname}}</h3>
+                <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+            </div>
+            <mat-menu #menu="matMenu" xPosition="before" overlapTrigger="true">
+                        <span (mouseleave)="menuTrigger.closeMenu()">
+                            <button mat-menu-item (click)="userControl(userDTO)">
+                                <mat-icon>mode_edit</mat-icon>
+                                <span>Edit</span>
+                            </button>
+                            <button mat-menu-item (click)="Delete(userDTO.user.id);">
+                                <mat-icon>delete</mat-icon>
+                                <span>Delete</span>
+                            </button>
+                        </span>
+            </mat-menu>
+
+            <div class="user-content" fxLayout="row" fxLayoutAlign="space-around center">
+                <div fxFlex="30" fxLayout="column" fxLayoutAlign="center center">
+                    <div class="user-img">
+                        <img class="transition-2"
+                             [src]="(adminUrl + '/user-account/image/' + userDTO.userAccount.avatarId)"
+                             onError="this.src='assets/img/users/default-user.jpg'">
+                    </div>
+<!--                    <div class="user-social">-->
+<!--                        <mat-slide-toggle color="primary" [checked]="userDTO.userAccount.active"-->
+<!--                                          (change)="userDTO.userAccount.active = !userDTO.userAccount.active"></mat-slide-toggle>-->
+<!--                    </div>-->
+                </div>
+                <div fxFlex="70" fxLayout="column" class="user-details transition-2">
+                    <p fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon class="muted-text">card_membership</mat-icon>
+                        <span>{{userDTO.userAccount.username}}</span>
+                    </p>
+                    <p fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon class="muted-text">mail_outline</mat-icon>
+                        <span>{{userDTO.user.email}}</span>
+                    </p>
+                    <p fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon class="muted-text">call</mat-icon>
+                        <span>{{userDTO.user.mobilePhone}}</span>
+                    </p>
+                    <p fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon class="muted-text">location_on</mat-icon>
+                        <span>{{userDTO.user.address}}</span>
+                    </p>
+                </div>
+            </div>
+        </mat-card>
+    </div>
+</div>

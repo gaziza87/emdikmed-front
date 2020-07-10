@@ -1,0 +1,68 @@
+<div fxLayout="column">
+    <div class="flex-p">
+        <div fxLayout="column" class="mat-elevation-z8">
+            <mat-form-field class="p-1"><input matInput placeholder="Type to filter the name column..." (keyup)="updateFilter($event)">
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="orgControl(null)">Добавить</button>
+            <br>
+        </div>
+        <ngx-datatable
+            #table
+            class="material"
+            [headerHeight]="50"
+            [limit]="10"
+            [columnMode]="'force'"
+            [footerHeight]="50"
+            [rowHeight]="'auto'"
+            [rows]="orgs"
+            [selected]="selected"
+            [selectionType]="'checkbox'">
+<!--            [loadingIndicator]="loadingIndicator"-->
+<!--            (activate)="onActivate($event)"-->
+<!--            (select)='onSelect($event)'>-->
+            <ngx-datatable-column
+                    [width]="30"
+                    [sortable]="false"
+                    [canAutoResize]="false"
+                    [draggable]="true"
+                    [resizeable]="false"
+                    [headerCheckboxable]="true"
+                    [checkboxable]="true">
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Name">
+                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                    {{row.name ['lan.cur' | translate]}}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="City">
+                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                  {{row.code}}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Address">
+                <ng-template ngx-datatable-cell-template let-value="value">
+                    {{value}}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Description">
+                <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                    {{row.orgTypeCode}}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Actions">
+                <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                    <button mat-icon-button color="primary"  (click)="orgControl(row)">
+                        <mat-icon style="margin-bottom: 10%">edit</mat-icon></button>
+                    <button mat-icon-button color="primary"  (click)="Delete()">
+                        <mat-icon color="warn">delete</mat-icon>
+                    </button>
+                    <mat-slide-toggle
+                            [color]="color"
+                            [checked]="checked"
+                            [disabled]="disabled">
+                    </mat-slide-toggle>
+                </ng-template>
+            </ngx-datatable-column>
+        </ngx-datatable>
+    </div>
+</div>
